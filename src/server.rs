@@ -23,6 +23,10 @@ impl ServerProtocol {
     pub fn secure(&self) -> bool {
         self.secure
     }
+
+    pub fn r#type(&self) -> ServerType {
+        self.r#type
+    }
 }
 
 impl Display for ServerProtocol {

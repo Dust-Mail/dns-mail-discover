@@ -6,6 +6,9 @@ edition = "2021"
 description = "A dns based mail server discovery crate."
 license = "MIT"
 
+documentation = "https://docs.dust.email/packages/dns-mail-discover"
+repository = "https://github.com/Dust-Mail/dns-mail-discover"
+
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
