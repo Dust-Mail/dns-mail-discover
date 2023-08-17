@@ -3,7 +3,7 @@ use log::warn;
 use crate::{
     dns::Dns,
     error::Result,
-    query::Query,
+    query::DnsQuery,
     server::{Server, ServerType::*},
 };
 
@@ -20,18 +20,21 @@ impl Client {
         Ok(client)
     }
 
+    /// Lookup basic dns settings to find mail servers according to https://datatracker.ietf.org/doc/html/rfc6186
     pub async fn dns_lookup<D: AsRef<str>>(&self, domain: D) -> Vec<Server> {
-        let server_types = vec![Pop, Smtp, Imap];
+        let server_types = vec![Pop, Imap];
 
         let mut queries = Vec::new();
 
         for server_type in server_types {
-            let plain = Query::new(domain.as_ref(), false, server_type);
-            let secure = Query::new(domain.as_ref(), true, server_type);
+            let plain = DnsQuery::new(domain.as_ref(), false, server_type);
+            let secure = DnsQuery::new(domain.as_ref(), true, server_type);
 
             queries.push(plain);
             queries.push(secure);
         }
+
+        queries.push(DnsQuery::new(domain.as_ref(), true, Smtp));
 
         let mut servers = Vec::new();
 
@@ -53,4 +56,13 @@ impl Client {
 
         servers
     }
+
+    // pub async fn from_heuristics<D: AsRef<str>>(&self, domain: D) {
+    //     let to_check = vec![
+    //         server!(format!("mail.{}", domain.as_ref()), 143, false, Imap),
+    //         server!(format!("imap.{}", domain.as_ref()), 143, false, Imap),
+    //         server!(format!("mail.{}", domain.as_ref()), 993, true, Imap),
+    //         server!(format!("imap.{}", domain.as_ref()), 993, true, Imap),
+    //     ];
+    // }
 }

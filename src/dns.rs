@@ -5,7 +5,7 @@ use crate::{
     failed,
 };
 
-use trust_dns_resolver::{config::ResolverConfig, proto::rr::rdata::SRV, TokioAsyncResolver};
+use trust_dns_resolver::{proto::rr::rdata::SRV, TokioAsyncResolver};
 
 struct WeightedSrvRecord {
     record: SRV,
@@ -62,7 +62,7 @@ pub struct Dns {
 
 impl Dns {
     pub fn new() -> Result<Self> {
-        let resolver = TokioAsyncResolver::tokio(ResolverConfig::default(), Default::default())?;
+        let resolver = TokioAsyncResolver::tokio_from_system_conf()?;
 
         let dns = Self { resolver };
 

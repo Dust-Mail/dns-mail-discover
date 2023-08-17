@@ -1,10 +1,12 @@
-use std::{error, fmt::Display, result};
+use std::{error, fmt::Display, io::Error as IoError, result};
 
 use trust_dns_resolver::error::ResolveError;
 
 #[derive(Debug)]
 pub enum ErrorKind {
+    NoBytesSent,
     Unresolvable,
+    Io(IoError),
     Resolve(ResolveError),
 }
 
@@ -17,6 +19,12 @@ pub struct Error {
 impl From<ResolveError> for Error {
     fn from(error: ResolveError) -> Self {
         Error::new(ErrorKind::Resolve(error), "Dns error")
+    }
+}
+
+impl From<IoError> for Error {
+    fn from(error: IoError) -> Self {
+        Error::new(ErrorKind::Io(error), "IO error")
     }
 }
 
