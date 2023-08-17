@@ -6,6 +6,7 @@ use trust_dns_resolver::error::ResolveError;
 pub enum ErrorKind {
     NoBytesSent,
     Unresolvable,
+    NotFound,
     Io(IoError),
     Resolve(ResolveError),
 }

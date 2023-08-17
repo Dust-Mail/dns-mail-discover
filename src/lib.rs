@@ -2,6 +2,8 @@ use client::Client;
 use error::Result;
 use server::Server;
 
+use crate::error::ErrorKind;
+
 mod client;
 mod dns;
 pub mod error;
@@ -16,6 +18,13 @@ pub async fn from_domain<D: AsRef<str>>(domain: D) -> Result<Vec<Server>> {
 
     let servers = client.dns_lookup(domain).await;
 
+    if servers.is_empty() {
+        failed!(
+            ErrorKind::NotFound,
+            "Could not find any servers from the given domain"
+        )
+    }
+
     Ok(servers)
 }
 
@@ -29,7 +38,7 @@ mod tests {
     async fn test_from_domain() {
         env_logger::init();
 
-        let servers = from_domain("guusvanmeerveld.dev").await.unwrap();
+        let servers = from_domain("samtaen.nl").await.unwrap();
 
         info!("{:?}", servers)
     }
