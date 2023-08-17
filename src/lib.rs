@@ -30,16 +30,13 @@ pub async fn from_domain<D: AsRef<str>>(domain: D) -> Result<Vec<Server>> {
 
 #[cfg(test)]
 mod tests {
-    use log::info;
 
     use super::*;
 
     #[tokio::test]
     async fn test_from_domain() {
-        env_logger::init();
+        let servers = from_domain("gmail.com").await.unwrap();
 
-        let servers = from_domain("samtaen.nl").await.unwrap();
-
-        info!("{:?}", servers)
+        assert_eq!(servers.len(), 3);
     }
 }
