@@ -1,6 +1,6 @@
 [package]
 name = "dns-mail-discover"
-version = "0.2.4"
+version = "0.2.5"
 edition = "2021"
 
 description = "A dns based mail server discovery crate."
