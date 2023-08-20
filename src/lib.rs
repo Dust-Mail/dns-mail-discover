@@ -12,7 +12,7 @@ pub mod server;
 // mod tcp;
 
 pub async fn from_domain<D: AsRef<str>>(domain: D) -> Result<Vec<Server>> {
-    let client = Client::new()?;
+    let client = Client::new().await?;
 
     // let mut servers = Vec::new();
 
@@ -33,7 +33,8 @@ mod tests {
 
     use super::*;
 
-    #[tokio::test]
+    #[cfg_attr(feature = "runtime-async-std", async_std::test)]
+    #[cfg_attr(feature = "runtime-tokio", tokio::test)]
     async fn test_from_domain() {
         let servers = from_domain("gmail.com").await.unwrap();
 

@@ -1,6 +1,10 @@
 use std::fmt::Display;
 
+#[cfg(feature = "runtime-tokio")]
 use tokio::net::ToSocketAddrs;
+
+#[cfg(feature = "runtime-async-std")]
+use std::net::ToSocketAddrs;
 
 #[derive(Clone, Copy, Debug)]
 pub enum ServerType {

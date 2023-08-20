@@ -12,8 +12,8 @@ pub struct Client {
 }
 
 impl Client {
-    pub fn new() -> Result<Self> {
-        let dns = Dns::new()?;
+    pub async fn new() -> Result<Self> {
+        let dns = Dns::new().await?;
 
         let client = Self { dns };
 
