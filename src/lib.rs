@@ -2,7 +2,7 @@ use client::Client;
 use error::Result;
 use server::Server;
 
-use crate::error::ErrorKind;
+use crate::error::{err, ErrorKind};
 
 mod client;
 mod dns;
@@ -19,7 +19,7 @@ pub async fn from_domain<D: AsRef<str>>(domain: D) -> Result<Vec<Server>> {
     let servers = client.dns_lookup(domain).await;
 
     if servers.is_empty() {
-        failed!(
+        err!(
             ErrorKind::NotFound,
             "Could not find any servers from the given domain"
         )
