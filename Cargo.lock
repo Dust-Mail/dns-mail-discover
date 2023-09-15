@@ -114,6 +114,7 @@ dependencies = [
  "futures-util",
  "native-tls",
  "thiserror",
+ "tokio",
  "url",
 ]
 
